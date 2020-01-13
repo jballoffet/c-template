@@ -16,9 +16,10 @@
 *.gch
 *.pch
 
-# Libraries
+# Libraries (libbaz.a exception for example purpose)
 *.lib
 *.a
+!lib/libbaz.a
 *.la
 *.lo
 
@@ -50,3 +51,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Editor files
+.vscode/

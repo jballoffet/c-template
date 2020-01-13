@@ -12,8 +12,8 @@ YEAR        	= "2020"
 ################################################################
 
 CC          	= gcc
-CFLAGS      	= -c -Wall -Isrc -Itest/unity/include
-LDFLAGS     	= -lm
+CFLAGS      	= -c -Wall -Isrc -Itest/unity/include -Iinclude
+LDFLAGS     	= -Llib -lbaz
 
 ################################################################
 # SOURCES, HEADERS, OBJECTS AND EXECUTABLES                    #
