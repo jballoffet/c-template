@@ -1,0 +1,16 @@
+# Travis configuration for C project by Javier Balloffet
+
+language: c
+
+compiler:
+  - gcc
+
+script:
+  - make
+  - make test
+
+after_success:
+  - echo "success"
+ 
+after_failure:
+  - echo "failure"
