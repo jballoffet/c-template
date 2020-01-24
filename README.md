@@ -25,7 +25,7 @@ On Ubuntu/Debian, you can install them with:
 On other platforms, please use the corresponding package managing tool to
 install them before proceeding.
 
-### Installing
+### Building
 
 You can get the source by "git clone" this git repository.
 
@@ -40,6 +40,8 @@ To build the sample application execute the following:
   make
 ```
 
+### Running
+
 To run the sample application execute the following:
 
 ```shell
@@ -49,31 +51,48 @@ You should see something like this:
 
 ```
   Hello World!
-  foo.c -> bar(): 1
-  libbaz.a -> qux(): 2
+  foo.c -> bar(): 0
+  libbaz.a -> qux(): 1
 ```
 
 ## Running the tests
 
-This template supports Unity for unit testing, and includes one test to show how to use it. To build and run the tests execute the following:
+This template supports Unity framework for unit testing, and includes one test to show how to use it. To build and run the tests execute the following:
 
 ```shell
   make test
 ```
 
-You should see something like this:
+After the building output, you should see something like this:
 
 ```
-  Hello World!
-  foo.c -> bar(): 1
-  libbaz.a -> qux(): 2
+  Unity test run 1 of 1
+  .
+
+  -----------------------
+  1 Tests 0 Failures 0 Ignored 
+  OK
 ```
 
-To run the tests again without re-building, execute:
+To run the tests again without rebuilding, execute:
 
 ```shell
-  ./bin/test/test.out
+  ./bin/test.out
 ```
+
+## Directory Structure
+
+    .
+    ├── bin                     # Application and tests binaries
+    ├── build                   # Compiled files
+    ├── include                 # Third-party libraries includes
+    ├── lib                     # Third-party libraries
+    ├── src                     # Application source code
+    └── test                    # Unit testing directory
+        ├── src                 # Unit tests source code
+        └── unity               # Unity framework directory
+            ├── include         # Unity framework includes
+            └── src             # Unity framework source code
 
 ## Contributing
 
