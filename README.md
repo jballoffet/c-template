@@ -110,7 +110,7 @@ See also the list of [contributors](https://github.com/jballoffet/c-template/con
 
 ## License
 
-This project is licensed under the Apache 2.0 License - see the [LICENSE](/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details
 
 [Unity](http://www.throwtheswitch.org/unity/) is
 distributed under the MIT license. See [LICENSE.txt](/test/unity/LICENSE.txt) for details.
