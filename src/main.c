@@ -11,6 +11,7 @@
 #include "baz.h"
 
 int main() {
+  printf("Hello World!\n");
   printf("foo.c -> bar(): %d\n", bar());
   printf("libbaz.a -> qux(): %d\n", qux());
   return 0;

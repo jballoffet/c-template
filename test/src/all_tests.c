@@ -1,6 +1,6 @@
 /**
  * \file            all_tests.c
- * \brief           Main test file
+ * \brief           Test main file
  * \author          Javier Balloffet <javier.balloffet@gmail.com>
  * \date            Jan 13, 2020
  * \details         Use makefile to build
