@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/jballoffet/c-template.svg?branch=master)](https://travis-ci.com/jballoffet/c-template)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 # C Project Template
 
 This template provides everything you need to start a new C project. It supports essential features, such as:
