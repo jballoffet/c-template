@@ -12,7 +12,7 @@ YEAR        	= "2020"
 ################################################################
 
 CC          	= gcc
-CFLAGS      	= -c -Wall -Isrc -Itest/unity/include -Iinclude -ftest-coverage -fprofile-arcs
+CFLAGS      	= -c -Wall -Isrc -Itest/unity/include -Iinclude
 LDFLAGS     	= -Llib -lbaz -lgcov --coverage
 
 ################################################################
@@ -20,7 +20,8 @@ LDFLAGS     	= -Llib -lbaz -lgcov --coverage
 ################################################################
 
 SRC_DIR     	= src
-TEST_DIR    	= test
+TEST_DIR    	= test/src
+UNITY_DIR		= test/unity
 BUILD_DIR   	= build
 BIN_DIR     	= bin
 
@@ -33,6 +34,9 @@ TEST_SOURCES  	= $(shell find $(TEST_DIR) -name '*.c')
 TEST_OBJS      	= $(patsubst %.c, $(BUILD_DIR)/%.o, $(TEST_SOURCES))
 TEST_SRC_OBJS	= $(filter-out $(BUILD_DIR)/src/main.o, $(OBJS))
 TEST_EXEC      	= test.out
+
+UNITY_SOURCES  	= $(shell find $(UNITY_DIR) -name '*.c')
+UNITY_OBJS    	= $(patsubst %.c, $(BUILD_DIR)/%.o, $(UNITY_SOURCES))
 
 ################################################################
 # TAR FILE INFORMATION                                         #
@@ -78,12 +82,12 @@ test: $(TEST_EXEC)
 	@echo '---> Running unit tests...'
 	@./$(BIN_DIR)/$(TEST_EXEC)
 
-$(TEST_EXEC): $(TEST_OBJS) $(TEST_SRC_OBJS)
+$(TEST_EXEC): $(TEST_OBJS) $(TEST_SRC_OBJS) build_unity
 	@echo ''
 	@echo '*****************************************************'
 	@echo '---> Linking...'
 	mkdir -p $(BIN_DIR)
-	$(CC) $(TEST_OBJS) $(TEST_SRC_OBJS) $(LDFLAGS) -o $(BIN_DIR)/$@
+	$(CC) $(TEST_OBJS) $(TEST_SRC_OBJS) build/unity.o build/unity_fixture.o $(LDFLAGS) -o $(BIN_DIR)/$@
 	@echo '---> Linking Complete!'
 	@echo '*****************************************************'
 	@echo ''
@@ -93,8 +97,18 @@ $(BUILD_DIR)/%.o: %.c Makefile
 	@echo '*****************************************************'
 	@echo '---> Compiling...'
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) -ftest-coverage -fprofile-arcs $< -o $@
 	@echo '---> Compiling Complete!'
+	@echo '*****************************************************'
+	@echo ''
+
+build_unity:
+	@echo ''
+	@echo '*****************************************************'
+	@echo '---> Compiling Unity...'
+	gcc -c -Wall -Isrc -Itest/unity/include -Iinclude test/unity/src/unity.c  -o build/unity.o
+	gcc -c -Wall -Isrc -Itest/unity/include -Iinclude test/unity/src/unity_fixture.c -o build/unity_fixture.o
+	@echo '---> Compiling Unity Complete!'
 	@echo '*****************************************************'
 	@echo ''
 
@@ -136,12 +150,6 @@ run:
 	@echo '*****************************************************'
 	@echo '---> Running...'
 	./$(BIN_DIR)/$(EXEC)
-
-coverage: test
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Computing test coverage...'
-	gcov -o build/src --source-prefix src foo.c
 
 help:
 	@echo ''
