@@ -2,15 +2,16 @@
 
 language: c
 
-compiler:
-  - gcc
+compiler: gcc
 
 script:
   - make
   - make test
+  - make coverage
 
 after_success:
-  - echo "success"
- 
+  - echo "Success! :)"
+  - bash <(curl -s https://codecov.io/bash)
+
 after_failure:
-  - echo "failure"
+  - echo "Failure... :("

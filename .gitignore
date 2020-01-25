@@ -54,3 +54,8 @@ dkms.conf
 
 # Editor files
 .vscode/
+
+# Code coverage files
+*.gcov
+*.gcda
+*.gcno

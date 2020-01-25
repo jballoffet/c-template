@@ -12,8 +12,8 @@ YEAR        	= "2020"
 ################################################################
 
 CC          	= gcc
-CFLAGS      	= -c -Wall -Isrc -Itest/unity/include -Iinclude
-LDFLAGS     	= -Llib -lbaz
+CFLAGS      	= -c -Wall -Isrc -Itest/unity/include -Iinclude -ftest-coverage -fprofile-arcs
+LDFLAGS     	= -Llib -lbaz -lgcov --coverage
 
 ################################################################
 # SOURCES, HEADERS, OBJECTS AND EXECUTABLES                    #
@@ -102,7 +102,7 @@ clean:
 	@echo ''
 	@echo '*****************************************************'
 	@echo '---> Cleaning...'
-	rm -rf $(BUILD_DIR) $(BIN_DIR) $(DOC_DIR)
+	rm -rf $(BUILD_DIR) $(BIN_DIR) $(DOC_DIR) *.gcov
 	@echo '---> Cleaning Complete!'
 	@echo '*****************************************************'
 	@echo ''
@@ -136,6 +136,12 @@ run:
 	@echo '*****************************************************'
 	@echo '---> Running...'
 	./$(BIN_DIR)/$(EXEC)
+
+coverage: test
+	@echo ''
+	@echo '*****************************************************'
+	@echo '---> Computing test coverage...'
+	gcov -o build/src --source-prefix src foo.c
 
 help:
 	@echo ''
