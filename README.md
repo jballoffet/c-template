@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/jballoffet/c-template.svg?branch=master)](https://travis-ci.com/jballoffet/c-template)
+[![Coverage Status](https://codecov.io/gh/jballoffet/c-template/branch/master/graph/badge.svg)](https://codecov.io/gh/jballoffet/c-template)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 # C Project Template
@@ -8,6 +9,7 @@ This template provides everything you need to start a new C project. It supports
  * [Make](https://www.gnu.org/software/make/) support for building application, libraries and tests
  * [Doxygen](http://www.doxygen.nl/) support for documenting
  * [Unity](http://www.throwtheswitch.org/unity/) support for unit testing
+ * [Codecov](https://codecov.io/) support for code coverage
  * [Travis CI](https://travis-ci.com/) support for CI/CD
 
 ## Getting Started
