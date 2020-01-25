@@ -82,12 +82,12 @@ test: $(TEST_EXEC)
 	@echo '---> Running unit tests...'
 	@./$(BIN_DIR)/$(TEST_EXEC)
 
-$(TEST_EXEC): $(TEST_OBJS) $(TEST_SRC_OBJS) build_unity
+$(TEST_EXEC): $(TEST_SRC_OBJS) build_tests build_unity
 	@echo ''
 	@echo '*****************************************************'
 	@echo '---> Linking...'
 	mkdir -p $(BIN_DIR)
-	$(CC) $(TEST_OBJS) $(TEST_SRC_OBJS) build/unity.o build/unity_fixture.o $(LDFLAGS) -o $(BIN_DIR)/$@
+	$(CC) build/all_tests.o build/test_foo.o $(TEST_SRC_OBJS) build/unity.o build/unity_fixture.o $(LDFLAGS) -o $(BIN_DIR)/$@
 	@echo '---> Linking Complete!'
 	@echo '*****************************************************'
 	@echo ''
@@ -99,6 +99,16 @@ $(BUILD_DIR)/%.o: %.c Makefile
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -ftest-coverage -fprofile-arcs $< -o $@
 	@echo '---> Compiling Complete!'
+	@echo '*****************************************************'
+	@echo ''
+
+build_tests:
+	@echo ''
+	@echo '*****************************************************'
+	@echo '---> Compiling tests...'
+	gcc -c -Wall -Isrc -Itest/unity/include -Iinclude test/src/all_tests.c  -o build/all_tests.o
+	gcc -c -Wall -Isrc -Itest/unity/include -Iinclude test/src/test_foo.c -o build/test_foo.o
+	@echo '---> Compiling tests Complete!'
 	@echo '*****************************************************'
 	@echo ''
 
