@@ -4,45 +4,53 @@
 
 AUTHOR      	= "JavierBalloffet"
 CLASS       	= "R1042"
-TP          	= "TP1"
+EXERCISE      	= "1_1"
 YEAR        	= "2020"
+
+################################################################
+# SOURCES, HEADERS, OBJECTS, LIBRARIES AND EXECUTABLES         #
+################################################################
+
+BIN_DIR     		= bin
+BUILD_DIR   		= build
+INC_DIR				= include
+LIB_DIR         	= lib
+SRC_DIR      		= src
+TEST_DIR			= test
+
+APP_BUILD_DIR   	= $(BUILD_DIR)/$(SRC_DIR)
+APP_SOURCES    		= $(shell find $(SRC_DIR) -name '*.c')
+APP_HEADERS    		= $(shell find $(SRC_DIR) -name '*.h')
+APP_OBJS       		= $(patsubst %.c, $(APP_BUILD_DIR)/%.o, $(APP_SOURCES))
+APP_LIB_SOURCES		= $(filter-out $(SRC_DIR)/main.c, $(APP_SOURCES))
+APP_LIB_OBJS		= $(patsubst %.c, $(APP_BUILD_DIR)/%.o, $(APP_LIB_SOURCES))
+APP_EXEC       		= app.out
+
+TEST_BUILD_DIR 		= $(BUILD_DIR)/$(TEST_DIR)
+TEST_SRC_DIR   		= $(TEST_DIR)/src
+TEST_SOURCES  		= $(shell find $(TEST_SRC_DIR) -name '*.c')
+TEST_OBJS      		= $(patsubst %.c, $(TEST_BUILD_DIR)/%.o, $(TEST_SOURCES))
+TEST_UNITY_SRC_DIR	= $(TEST_DIR)/unity/src
+TEST_UNITY_INC_DIR	= $(TEST_DIR)/unity/include
+TEST_UNITY_SOURCES  = $(shell find $(TEST_UNITY_SRC_DIR) -name '*.c')
+TEST_UNITY_OBJS    	= $(patsubst %.c, $(TEST_BUILD_DIR)/%.o, $(TEST_UNITY_SOURCES))
+TEST_EXEC      		= test.out
 
 ################################################################
 # COMPILER AND ARGUMENTS                                       #
 ################################################################
 
 CC          	= gcc
-CFLAGS      	= -c -Wall -Isrc -Itest/unity/include -Iinclude
-LDFLAGS     	= -Llib -lbaz -lgcov --coverage
-
-################################################################
-# SOURCES, HEADERS, OBJECTS AND EXECUTABLES                    #
-################################################################
-
-SRC_DIR     	= src
-TEST_DIR    	= test/src
-UNITY_DIR		= test/unity
-BUILD_DIR   	= build
-BIN_DIR     	= bin
-
-SOURCES     	= $(shell find $(SRC_DIR) -name '*.c')
-OBJS        	= $(patsubst %.c, $(BUILD_DIR)/%.o, $(SOURCES))
-HEADERS     	= $(shell find $(SRC_DIR) -name '*.h')
-EXEC        	= app.out
-
-TEST_SOURCES  	= $(shell find $(TEST_DIR) -name '*.c')
-TEST_OBJS      	= $(patsubst %.c, $(BUILD_DIR)/%.o, $(TEST_SOURCES))
-TEST_SRC_OBJS	= $(filter-out $(BUILD_DIR)/src/main.o, $(OBJS))
-TEST_EXEC      	= test.out
-
-UNITY_SOURCES  	= $(shell find $(UNITY_DIR) -name '*.c')
-UNITY_OBJS    	= $(patsubst %.c, $(BUILD_DIR)/%.o, $(UNITY_SOURCES))
+CFLAGS      	= -c -Wall -I$(SRC_DIR) -I$(TEST_UNITY_INC_DIR) -I$(INC_DIR)
+EXTRA_CFLAGS    =
+LDFLAGS     	= -L$(LIB_DIR) -lbaz
+EXTRA_LDFLAGS   = -lgcov --coverage
 
 ################################################################
 # TAR FILE INFORMATION                                         #
 ################################################################
 
-FILE_NAME   	= $(AUTHOR)-$(CLASS)-$(TP)-$(YEAR).tar.gz
+FILE_NAME   	= $(AUTHOR)-$(CLASS)-$(EXERCISE)-$(YEAR).tar.gz
 
 ################################################################
 # TEXT EDITOR                                                  #
@@ -64,102 +72,53 @@ DOC_DIR     	= doxy
 
 .PHONY: all test clean compress edit doc run help
 
-all: $(EXEC)
+all: $(APP_EXEC)
 
-$(EXEC): $(OBJS)
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Linking...'
-	mkdir -p $(BIN_DIR)
-	$(CC) $(OBJS) $(LDFLAGS) -o $(BIN_DIR)/$@
-	@echo '---> Linking Complete!'
-	@echo '*****************************************************'
-	@echo ''
+$(APP_EXEC): $(APP_OBJS)
+	@echo '[LD] Linking C executable $@'
+	@mkdir -p $(BIN_DIR)
+	@$(CC) $(APP_OBJS) $(LDFLAGS) -o $(BIN_DIR)/$@
+	@echo 'Built target $@'
 
+test: EXTRA_CFLAGS = -ftest-coverage -fprofile-arcs
 test: $(TEST_EXEC)
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Running unit tests...'
 	@./$(BIN_DIR)/$(TEST_EXEC)
 
-$(TEST_EXEC): $(TEST_SRC_OBJS) build_tests build_unity
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Linking...'
-	mkdir -p $(BIN_DIR)
-	$(CC) build/all_tests.o build/test_foo.o $(TEST_SRC_OBJS) build/unity.o build/unity_fixture.o $(LDFLAGS) -o $(BIN_DIR)/$@
-	@echo '---> Linking Complete!'
-	@echo '*****************************************************'
-	@echo ''
+$(TEST_EXEC): $(APP_LIB_OBJS) $(TEST_OBJS) $(TEST_UNITY_OBJS)
+	@echo '[LD] Linking C executable $@'
+	@mkdir -p $(BIN_DIR)
+	@$(CC) $(APP_LIB_OBJS) $(TEST_OBJS) $(TEST_UNITY_OBJS) $(LDFLAGS) $(EXTRA_LDFLAGS) -o $(BIN_DIR)/$@
+	@echo 'Built target $@'
 
-$(BUILD_DIR)/%.o: %.c Makefile
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Compiling...'
-	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -ftest-coverage -fprofile-arcs $< -o $@
-	@echo '---> Compiling Complete!'
-	@echo '*****************************************************'
-	@echo ''
+$(APP_BUILD_DIR)/%.o: %.c Makefile
+	@echo '[CC] Compiling C object $@'
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
 
-build_tests:
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Compiling tests...'
-	gcc -c -Wall -Isrc -Itest/unity/include -Iinclude test/src/all_tests.c  -o build/all_tests.o
-	gcc -c -Wall -Isrc -Itest/unity/include -Iinclude test/src/test_foo.c -o build/test_foo.o
-	@echo '---> Compiling tests Complete!'
-	@echo '*****************************************************'
-	@echo ''
-
-build_unity:
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Compiling Unity...'
-	gcc -c -Wall -Isrc -Itest/unity/include -Iinclude test/unity/src/unity.c  -o build/unity.o
-	gcc -c -Wall -Isrc -Itest/unity/include -Iinclude test/unity/src/unity_fixture.c -o build/unity_fixture.o
-	@echo '---> Compiling Unity Complete!'
-	@echo '*****************************************************'
-	@echo ''
+$(TEST_BUILD_DIR)/%.o: %.c Makefile
+	@echo '[CC] Compiling C object $@'
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $< -o $@
 
 clean:
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Cleaning...'
-	rm -rf $(BUILD_DIR) $(BIN_DIR) $(DOC_DIR) *.gcov
-	@echo '---> Cleaning Complete!'
-	@echo '*****************************************************'
-	@echo ''
+	@echo '[RM] Cleaning workspace'
+	@rm -rf $(BUILD_DIR) $(BIN_DIR) $(DOC_DIR)
 
-compress: $(SRC_DIR) $(TEST_DIR)/ Makefile $(DOC_FILE)
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Packing...'
-	tar -zcvf $(FILE_NAME) $(SRC_DIR) $(TEST_DIR) Makefile $(DOC_FILE)
-	@echo '---> Packing Complete!'
-	@echo '*****************************************************'
-	@echo ''
+compress:
+	@echo '[TAR] Packing workspace'
+	@tar -zcvf $(FILE_NAME) $(SRC_DIR) $(TEST_DIR) Makefile $(DOC_FILE)
 
 edit:
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Editing...'
-	$(TEXT_EDITOR) .
+	@echo '[EDIT] Editing workspace'
+	@$(TEXT_EDITOR) .
 
 doc:
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Generating Code Documentation...'
-	$(DOC_GEN) $(DOC_FILE)
-	@echo '---> Generating Code Documentation Complete!'
-	@echo '*****************************************************'
-	@echo ''
+	@echo '[DOC] Generating documentation'
+	@$(DOC_GEN) $(DOC_FILE)
 
 run:
-	@echo ''
-	@echo '*****************************************************'
-	@echo '---> Running...'
-	./$(BIN_DIR)/$(EXEC)
+	@echo '[RUN] Running application'
+	@./$(BIN_DIR)/$(EXEC)
 
 help:
 	@echo ''
