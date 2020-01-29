@@ -31,7 +31,7 @@ TEST_UNITY_INC_DIR	= $(TEST_DIR)/unity/include
 TEST_UNITY_SOURCES  = $(shell find $(TEST_UNITY_SRC_DIR) -name '*.c')
 TEST_UNITY_OBJS    	= $(patsubst %.c, $(BUILD_DIR)/%.o, $(TEST_UNITY_SOURCES))
 TEST_APP_SOURCES    = $(filter-out $(SRC_DIR)/main.c, $(APP_SOURCES))
-TEST_APP_OBJS       = $(patsubst %.c, $(BUILD_DIR)/%.cov.o, $(TEST_APP_SOURCES))
+TEST_APP_OBJS       = $(patsubst %.c, $(BUILD_DIR)/%_cov.o, $(TEST_APP_SOURCES))
 TEST_EXEC      		= test.out
 
 ################################################################
@@ -92,7 +92,7 @@ $(BUILD_DIR)/%.o: %.c Makefile
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $< -o $@
 
-$(BUILD_DIR)/%.cov.o: %.c Makefile
+$(BUILD_DIR)/%_cov.o: %.c Makefile
 	@echo '[CC] Compiling C object $@'
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
