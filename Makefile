@@ -18,23 +18,20 @@ LIB_DIR         	= lib
 SRC_DIR      		= src
 TEST_DIR			= test
 
-APP_BUILD_DIR   	= $(BUILD_DIR)/app
 APP_SOURCES    		= $(shell find $(SRC_DIR) -name '*.c')
 APP_HEADERS    		= $(shell find $(SRC_DIR) -name '*.h')
-APP_OBJS       		= $(patsubst %.c, $(APP_BUILD_DIR)/%.o, $(APP_SOURCES))
+APP_OBJS       		= $(patsubst %.c, $(BUILD_DIR)/%.o, $(APP_SOURCES))
 APP_EXEC       		= app.out
 
-TEST_BUILD_DIR 		= $(BUILD_DIR)/$(TEST_DIR)
 TEST_SRC_DIR   		= $(TEST_DIR)/src
 TEST_SOURCES  		= $(shell find $(TEST_SRC_DIR) -name '*.c')
-TEST_OBJS      		= $(patsubst %.c, $(TEST_BUILD_DIR)/%.o, $(TEST_SOURCES))
+TEST_OBJS      		= $(patsubst %.c, $(BUILD_DIR)/%.o, $(TEST_SOURCES))
 TEST_UNITY_SRC_DIR	= $(TEST_DIR)/unity/src
 TEST_UNITY_INC_DIR	= $(TEST_DIR)/unity/include
 TEST_UNITY_SOURCES  = $(shell find $(TEST_UNITY_SRC_DIR) -name '*.c')
-TEST_UNITY_OBJS    	= $(patsubst %.c, $(TEST_BUILD_DIR)/%.o, $(TEST_UNITY_SOURCES))
-TEST_APP_BUILD_DIR  = $(TEST_BUILD_DIR)/app
+TEST_UNITY_OBJS    	= $(patsubst %.c, $(BUILD_DIR)/%.o, $(TEST_UNITY_SOURCES))
 TEST_APP_SOURCES    = $(filter-out $(SRC_DIR)/main.c, $(APP_SOURCES))
-TEST_APP_OBJS       = $(patsubst %.c, $(TEST_APP_BUILD_DIR)/%.o, $(TEST_APP_SOURCES))
+TEST_APP_OBJS       = $(patsubst %.c, $(BUILD_DIR)/%.cov.o, $(TEST_APP_SOURCES))
 TEST_EXEC      		= test.out
 
 ################################################################
@@ -43,7 +40,7 @@ TEST_EXEC      		= test.out
 
 CC          	= gcc
 CFLAGS      	= -c -Wall -I$(SRC_DIR) -I$(TEST_UNITY_INC_DIR) -I$(INC_DIR)
-EXTRA_CFLAGS    =
+EXTRA_CFLAGS    = -ftest-coverage -fprofile-arcs
 LDFLAGS     	= -L$(LIB_DIR) -lbaz
 EXTRA_LDFLAGS   = -lgcov --coverage
 
@@ -81,7 +78,6 @@ $(APP_EXEC): $(APP_OBJS)
 	@$(CC) $(APP_OBJS) $(LDFLAGS) -o $(BIN_DIR)/$@
 	@echo 'Built target $@'
 
-test: EXTRA_CFLAGS = -ftest-coverage -fprofile-arcs
 test: $(TEST_EXEC)
 	@./$(BIN_DIR)/$(TEST_EXEC)
 
@@ -91,20 +87,15 @@ $(TEST_EXEC): $(TEST_APP_OBJS) $(TEST_OBJS) $(TEST_UNITY_OBJS)
 	@$(CC) $(TEST_APP_OBJS) $(TEST_OBJS) $(TEST_UNITY_OBJS) $(LDFLAGS) $(EXTRA_LDFLAGS) -o $(BIN_DIR)/$@
 	@echo 'Built target $@'
 
-$(TEST_APP_BUILD_DIR)/%.o: %.c Makefile
+$(BUILD_DIR)/%.o: %.c Makefile
+	@echo '[CC] Compiling C object $@'
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $< -o $@
+
+$(BUILD_DIR)/%.cov.o: %.c Makefile
 	@echo '[CC] Compiling C object $@'
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
-
-$(TEST_BUILD_DIR)/%.o: %.c Makefile
-	@echo '[CC] Compiling C object $@'
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $< -o $@
-
-$(APP_BUILD_DIR)/%.o: %.c Makefile
-	@echo '[CC] Compiling C object $@'
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $< -o $@
 
 clean:
 	@echo '[RM] Cleaning workspace'
@@ -112,7 +103,7 @@ clean:
 
 compress:
 	@echo '[TAR] Packing workspace'
-	@tar -zcvf $(FILE_NAME) $(SRC_DIR) $(TEST_DIR) Makefile $(DOC_FILE)
+	@tar -zcvf $(FILE_NAME) $(SRC_DIR) $(TEST_SRC_DIR) Makefile $(DOC_FILE)
 
 edit:
 	@echo '[EDIT] Editing workspace'

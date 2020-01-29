@@ -6,7 +6,6 @@ compiler: gcc
 
 script:
   - make
-  - make clean
   - make test
 
 after_success:
