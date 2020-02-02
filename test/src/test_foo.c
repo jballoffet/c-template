@@ -17,7 +17,7 @@ TEST_SETUP(foo) {}
 TEST_TEAR_DOWN(foo) {}
 
 TEST(foo, test_bar) {
-  TEST_ASSERT_EQUAL_INT32(0, bar());
+  TEST_ASSERT_EQUAL_INT32(0, bar(0));
 }
 
 TEST_GROUP_RUNNER(foo) {

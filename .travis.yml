@@ -1,8 +1,16 @@
 # Travis configuration for C project by Javier Balloffet
+os: linux
+
+dist: bionic
 
 language: c
 
 compiler: gcc
+
+addons:
+  apt:
+    packages:
+      - doxygen
 
 script:
   # Build app
