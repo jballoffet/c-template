@@ -62,7 +62,7 @@ TEXT_EDITOR 	= code
 
 DOC_GEN     	= doxygen
 DOC_FILE    	= Doxyfile
-DOC_DIR     	= doxy
+DOC_DIR     	= doc
 
 ################################################################
 # MAKE TARGETS                                                 #
@@ -111,6 +111,7 @@ edit:
 
 doc:
 	@echo '[DOC] Generating documentation'
+	@mkdir -p $(DOC_DIR)
 	@$(DOC_GEN) $(DOC_FILE)
 
 run:
