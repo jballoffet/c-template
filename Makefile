@@ -68,7 +68,7 @@ DOC_DIR     	= doc
 # MAKE TARGETS                                                 #
 ################################################################
 
-.PHONY: all test clean compress edit doc run help
+.PHONY: all test clean compress edit doc run format help
 
 all: $(APP_EXEC)
 
@@ -118,9 +118,13 @@ run:
 	@echo '[RUN] Running application'
 	@./$(BIN_DIR)/$(EXEC)
 
+format:
+	@echo '[FORMAT] Formating source code'
+	@clang-format -style=file -i -fallback-style=none $(APP_SOURCES) $(APP_HEADERS) $(TEST_SOURCES)
+
 help:
 	@echo ''
-	@echo '*****************************************************'
+	@echo '********************************************************'
 	@echo '  Uso:'
 	@echo '    make all:       Compiles and links the application'
 	@echo '    make test:      Runs unit tests'
@@ -129,6 +133,7 @@ help:
 	@echo '    make edit:      Opens code files with text editor'
 	@echo '    make doc:       Generates code documentation'
 	@echo '    make run:       Runs executable'
+	@echo '    make format:    Formats source code'
 	@echo '    make help:      Shows help'
-	@echo '*****************************************************'
+	@echo '********************************************************'
 	@echo ''

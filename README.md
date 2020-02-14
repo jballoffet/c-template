@@ -20,11 +20,16 @@ To build the sample project from source, the following tools are needed:
 
  * make
  * gcc
+ * git
+ * doxygen
+ * graphviz
+ * clang
+ * clang-format
 
 On Ubuntu/Debian, you can install them with:
 
 ```shell
-  sudo apt-get install build-essential
+  sudo apt-get install build-essential git doxygen graphviz clang clang-format
 ```
 
 On other platforms, please use the corresponding package managing tool to

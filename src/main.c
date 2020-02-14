@@ -3,16 +3,16 @@
  * @brief  Example main file
  * @author Javier Balloffet <javier.balloffet@gmail.com>
  * @date   Jan 13, 2020
- * 
+ *
  * Example main file, part of the C project template. Use makefile to build.
  */
 #include <stdio.h>
-#include "foo.h"
 #include "baz.h"
+#include "foo.h"
 
 /*!
  * @brief Entry point function.
- * 
+ *
  * @return The function returns 0 on success, and non-zero on failure.
  */
 int main() {

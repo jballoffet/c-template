@@ -1,0 +1,7 @@
+---
+# We'll use defaults from the Google style, but forcing pointers to the left (C++ style).
+Language: Cpp
+BasedOnStyle: Google
+DerivePointerAlignment: false
+PointerAlignment: Left
+...

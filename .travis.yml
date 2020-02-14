@@ -1,10 +1,9 @@
-# Travis configuration for C project by Javier Balloffet
+# Travis configuration for C template project
+# Author: Javier Balloffet <javier.balloffet@gmail.com>
+
 os: linux
-
 dist: bionic
-
 language: c
-
 compiler: gcc
 
 addons:
@@ -24,6 +23,13 @@ script:
     if [[ -s doc/doxygen_warning_log.txt ]]; then
       echo "Please fix doxygen warnings:"
       cat doc/doxygen_warning_log.txt
+      exit -1
+    fi
+  # Check coding style
+  - make format
+  - |
+    if [[ -n $(git diff) ]]; then
+      echo "Please run make format"
       exit -1
     fi
 

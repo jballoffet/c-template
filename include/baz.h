@@ -9,7 +9,11 @@
 #ifndef BAZ_H_
 #define BAZ_H_
 
-/* This function is intended to be a library function example. It always returns 1. */
+/*!
+ * @brief Example library function. It always returns 1.
+ *
+ * @return The function always returns 1.
+ */
 int qux();
 
 #endif /* BAZ_H_ */
