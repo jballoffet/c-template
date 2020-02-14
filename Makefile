@@ -79,6 +79,7 @@ $(APP_EXEC): $(APP_OBJS)
 	@echo 'Built target $@'
 
 test: $(TEST_EXEC)
+	@echo '[RUN] Running unit tests'
 	@./$(BIN_DIR)/$(TEST_EXEC)
 
 $(TEST_EXEC): $(TEST_APP_OBJS) $(TEST_OBJS) $(TEST_UNITY_OBJS)

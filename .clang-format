@@ -1,7 +1,11 @@
 ---
-# We'll use defaults from the Google style, but forcing pointers to the left (C++ style).
 Language: Cpp
+# We'll use the Google C++ style in this project.
+# See https://google.github.io/styleguide/cppguide.html.
 BasedOnStyle: Google
+# Some folks prefer to write "int* foo" while others prefer "int *foo". The
+# Google Style Guide only asks for consistency within a project, we chose
+# "int* foo" for this project:
 DerivePointerAlignment: false
 PointerAlignment: Left
 ...

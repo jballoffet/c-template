@@ -10,6 +10,7 @@ This template provides everything you need to start a new C project. It supports
  * [Doxygen](http://www.doxygen.nl/) support for documenting
  * [Unity](http://www.throwtheswitch.org/unity/) support for unit testing
  * [Codecov](https://codecov.io/) support for code coverage
+ * [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html/) support for source code formating
  * [Travis CI](https://travis-ci.com/) support for CI/CD
 
 ## Getting Started
