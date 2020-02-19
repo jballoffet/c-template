@@ -32,6 +32,14 @@ script:
       echo "Please run make format"
       exit -1
     fi
+  # Static analysis check
+  - make tidy > results.txt
+  - |
+    if [[ -n $(grep "warning: " results.txt) ]] || [[ -n $(grep "error: " results.txt) ]]; then
+      echo "Please fix ClangTidy warnings and/or errors:"
+      grep --color -E '^|warning: |error: ' results.txt
+      exit -1;
+    fi
 
 after_success:
   - echo "Success! :)"

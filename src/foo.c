@@ -7,5 +7,11 @@
  * Example source file, part of the C project template. Use makefile to build.
  */
 #include "foo.h"
+#include <stdlib.h>
 
-int bar(int input) { return input; }
+int bar(int input) {
+  char* x = (char*)malloc(10 * sizeof(char));
+  free(x);
+  int j = x[5];
+  return input;
+}
