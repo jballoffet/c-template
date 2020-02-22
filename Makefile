@@ -128,7 +128,7 @@ tidy:
 	@clang-tidy $(APP_SOURCES) $(APP_HEADERS) $(TEST_SOURCES) -- -I$(SRC_DIR) -I$(TEST_UNITY_INC_DIR) -I$(INC_DIR)
 
 memcheck: $(TEST_EXEC)
-	@echo '[MEMCHECK] Running Valgrind Memcheck for dynamic analysis'
+	@echo '[MEMCHECK] Running Valgrind for dynamic analysis'
 	@valgrind --tool=memcheck --leak-check=full --track-fds=yes --trace-children=yes --error-exitcode=1 ./$(BIN_DIR)/$(TEST_EXEC)
 
 help:

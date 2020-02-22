@@ -9,4 +9,7 @@
 #include "foo.h"
 #include <stdlib.h>
 
-int bar(int input) { return input; }
+int bar(int input) {
+  char* x = malloc(100);
+  return input;
+}

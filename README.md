@@ -12,7 +12,7 @@ This template provides everything you need to start a new C project. It supports
  * [Codecov](https://codecov.io/) support for code coverage
  * [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html/) support for source code formating
  * [ClangTidy](https://clang.llvm.org/extra/clang-tidy/) support for static analysis
- * [Valgrind's Memcheck](https://valgrind.org/) support for dynamic analysis
+ * [Valgrind](https://valgrind.org/) support for dynamic analysis
  * [Travis CI](https://travis-ci.com/) support for CI/CD
 
 ## Getting Started
