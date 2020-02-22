@@ -1,11 +1,11 @@
 ---
 Language: Cpp
-# We'll use the Google C++ style in this project.
+# Google C++ Style will be used in this project.
 # See https://google.github.io/styleguide/cppguide.html.
 BasedOnStyle: Google
 # Some folks prefer to write "int* foo" while others prefer "int *foo". The
-# Google Style Guide only asks for consistency within a project, we chose
-# "int* foo" for this project:
+# Google C++ Style Guide only asks for consistency within a project, so
+# "int* foo" was chosed for this project:
 DerivePointerAlignment: false
 PointerAlignment: Left
 ...

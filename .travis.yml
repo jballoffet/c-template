@@ -20,27 +20,13 @@ script:
   - make test
   # Build and check documentation
   - make doc
-  - |
-    if [[ -s doc/doxygen_warning_log.txt ]]; then
-      echo "Please fix doxygen warnings:"
-      cat doc/doxygen_warning_log.txt
-      exit -1
-    fi
+  - bash scripts/check_doc.sh
   # Check coding style
   - make format
-  - |
-    if [[ -n $(git diff) ]]; then
-      echo "Please run make format"
-      exit -1
-    fi
+  - bash scripts/check_format.sh
   # Static analysis check
-  # - make tidy > results.txt
-  # - |
-  #   if [[ -n $(grep "warning: " results.txt) ]] || [[ -n $(grep "error: " results.txt) ]]; then
-  #     echo "Please fix ClangTidy warnings and/or errors:"
-  #     grep --color -E '^|warning: |error: ' results.txt
-  #     exit -1;
-  #   fi
+  - make tidy > tidy_log.txt
+  - bash scripts/check_tidy.sh
   # Dynamic analysis check
   - make memcheck
 
