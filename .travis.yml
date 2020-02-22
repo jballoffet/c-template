@@ -40,6 +40,8 @@ script:
       grep --color -E '^|warning: |error: ' results.txt
       exit -1;
     fi
+  # Dynamic analysis check
+  - make memcheck
 
 after_success:
   - echo "Success! :)"

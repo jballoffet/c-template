@@ -68,7 +68,7 @@ DOC_DIR     	= doc
 # MAKE TARGETS                                                 #
 ################################################################
 
-.PHONY: all test clean compress edit doc run format tidy help
+.PHONY: all test clean compress edit doc run format tidy memcheck help
 
 all: $(APP_EXEC)
 
@@ -126,6 +126,10 @@ format:
 tidy:
 	@echo '[TIDY] Running ClangTidy for static analysis'
 	@clang-tidy $(APP_SOURCES) $(APP_HEADERS) $(TEST_SOURCES) -- -I$(SRC_DIR) -I$(TEST_UNITY_INC_DIR) -I$(INC_DIR)
+
+memcheck: $(TEST_EXEC)
+	@echo '[MEMCHECK] Running Valgrind Memcheck for dynamic analysis'
+	@valgrind --tool=memcheck --leak-check=full --track-fds=yes --trace-children=yes --error-exitcode=1 ./$(BIN_DIR)/$(TEST_EXEC)
 
 help:
 	@echo ''
