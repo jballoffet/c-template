@@ -11,6 +11,7 @@ addons:
     packages:
       - doxygen
       - graphviz
+      - valgrind
 
 script:
   # Build app
