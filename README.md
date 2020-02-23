@@ -28,11 +28,12 @@ To build the sample project from source, the following tools are needed:
  * graphviz
  * clang
  * clang-format
+ * valgrind
 
 On Ubuntu/Debian, you can install them with:
 
 ```shell
-  sudo apt-get install build-essential git doxygen graphviz clang clang-format
+  sudo apt-get install build-essential git doxygen graphviz clang clang-format valgrind
 ```
 
 On other platforms, please use the corresponding package managing tool to
