@@ -39,7 +39,6 @@ TEST_EXEC          = test.out
 ################################################################
 
 ifeq ($(COMPILER), clang)
-  $(info CC = clang)
   CC = clang
 else
   CC = gcc
@@ -48,6 +47,7 @@ endif
 CFLAGS        = -c -Wall -I$(SRC_DIR) -I$(TEST_UNITY_INC_DIR) -I$(INC_DIR)
 EXTRA_CFLAGS  =
 LDFLAGS       = -L$(LIB_DIR) -lbaz
+EXTRA_LDFLAGS =
 
 ifeq ($(DEBUG), on)
   EXTRA_CFLAGS += -g -O0 -DDEBUG
@@ -56,6 +56,17 @@ endif
 ifeq ($(COVERAGE), on)
   COVERAGE_CFLAGS  = -ftest-coverage -fprofile-arcs
   COVERAGE_LDFLAGS = -lgcov --coverage
+endif
+
+ifeq ($(GOOGLE_SANITIZER), asan)
+  EXTRA_CFLAGS += -fsanitize=address
+  EXTRA_LDFLAGS += -fsanitize=address
+else ifeq ($(GOOGLE_SANITIZER), msan)
+  EXTRA_CFLAGS += -fsanitize=memory
+  EXTRA_LDFLAGS += -fsanitize=memory
+else ifeq ($(GOOGLE_SANITIZER), ubsan)
+  EXTRA_CFLAGS += -fsanitize=undefined
+  EXTRA_LDFLAGS += -fsanitize=undefined
 endif
 
 ################################################################
@@ -101,7 +112,7 @@ all: $(APP_EXEC)
 $(APP_EXEC): $(APP_OBJS)
 	@echo '[LD] Linking C executable $@'
 	@mkdir -p $(BIN_DIR)
-	$(CC) $(APP_OBJS) $(LDFLAGS) -o $(BIN_DIR)/$@
+	@$(CC) $(APP_OBJS) $(LDFLAGS) $(EXTRA_LDFLAGS) -o $(BIN_DIR)/$@
 	@echo 'Built target $@'
 
 test: $(TEST_EXEC)
@@ -111,7 +122,7 @@ test: $(TEST_EXEC)
 $(TEST_EXEC): $(TEST_APP_OBJS) $(TEST_OBJS) $(TEST_UNITY_OBJS)
 	@echo '[LD] Linking C executable $@'
 	@mkdir -p $(BIN_DIR)
-	@$(CC) $(TEST_APP_OBJS) $(TEST_OBJS) $(TEST_UNITY_OBJS) $(LDFLAGS) $(COVERAGE_LDFLAGS) -o $(BIN_DIR)/$@
+	@$(CC) $(TEST_APP_OBJS) $(TEST_OBJS) $(TEST_UNITY_OBJS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(COVERAGE_LDFLAGS) -o $(BIN_DIR)/$@
 	@echo 'Built target $@'
 
 $(BUILD_DIR)/%.o: %.c Makefile

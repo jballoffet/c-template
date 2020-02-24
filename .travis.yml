@@ -35,7 +35,16 @@ script:
   # Dynamic analysis check
   - make clean
   - make memcheck
-  # Get code coverage
+  # Run Google's Address and Leak Sanitizer (ASAN and LSAN)
+  - make clean
+  - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=asan
+  # Run Google's Memory Sanitizer (MSAN)
+  - make clean
+  - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=msan
+  # Run Google's Undefined Behavior Sanitizer (UBSAN)
+  - make clean
+  - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=ubsan
+  # Compute code coverage
   - make clean
   - make test DEBUG=on COVERAGE=on
 
