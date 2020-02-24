@@ -15,20 +15,29 @@ addons:
 
 script:
   # Build app
+  - make clean
   - make
   # Build and run unit tests
+  - make clean
   - make test
   # Build and check documentation
+  - make clean
   - make doc
   - bash scripts/check_doc.sh
   # Check coding style
+  - make clean
   - make format
   - bash scripts/check_format.sh
   # Static analysis check
+  - make clean
   - make tidy > tidy_log.txt
   - bash scripts/check_tidy.sh
   # Dynamic analysis check
+  - make clean
   - make memcheck
+  # Get code coverage
+  - make clean
+  - make test DEBUG=on COVERAGE=on
 
 after_success:
   - echo "Success! :)"
