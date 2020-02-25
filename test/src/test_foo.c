@@ -1,11 +1,11 @@
-/**
- * \file            test_foo.c
- * \brief           Example test file
- * \author          Javier Balloffet <javier.balloffet@gmail.com>
- * \date            Jan 13, 2020
- * \details         Use makefile to build
+/*!
+ * @file   test_foo.c
+ * @brief  Example test file
+ * @author Javier Balloffet <javier.balloffet@gmail.com>
+ * @date   Jan 13, 2020
+ *
+ * Example test file, part of the C Project Template. Use makefile to build.
  */
-
 #include "foo.h"
 #include "unity.h"
 #include "unity_fixture.h"

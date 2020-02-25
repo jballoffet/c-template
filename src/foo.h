@@ -4,7 +4,7 @@
  * @author Javier Balloffet <javier.balloffet@gmail.com>
  * @date   Jan 13, 2020
  *
- * Example header file, part of the C project template. Use makefile to build.
+ * Example header file, part of the C Project Template. Use makefile to build.
  */
 #ifndef FOO_H_
 #define FOO_H_

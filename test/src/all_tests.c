@@ -1,11 +1,11 @@
-/**
- * \file            all_tests.c
- * \brief           Test main file
- * \author          Javier Balloffet <javier.balloffet@gmail.com>
- * \date            Jan 13, 2020
- * \details         Use makefile to build
+/*!
+ * @file   all_tests.c
+ * @brief  Test main file
+ * @author Javier Balloffet <javier.balloffet@gmail.com>
+ * @date   Jan 13, 2020
+ *
+ * Test main file, part of the C Project Template. Use makefile to build.
  */
-
 #include "unity_fixture.h"
 
 static void RunAllTests(void) { RUN_TEST_GROUP(foo); }

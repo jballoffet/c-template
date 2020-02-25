@@ -4,7 +4,7 @@
  * @author Javier Balloffet <javier.balloffet@gmail.com>
  * @date   Jan 13, 2020
  *
- * Example main file, part of the C project template. Use makefile to build.
+ * Example main file, part of the C Project Template. Use makefile to build.
  */
 #include <stdio.h>
 #include "baz.h"
