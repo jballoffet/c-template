@@ -20,7 +20,7 @@ addons:
 
 jobs:
   include:
-    # Build app
+    # Build application
     - name: "build-app"
       stage: build
       script:
@@ -31,45 +31,47 @@ jobs:
       script:
         - make doc
         - bash scripts/check_doc.sh
-
-# script:
-#   # Build app
-#   - make clean
-#   - make
-#   # Build and run unit tests
-#   - make clean
-#   - make test
-#   # Build and check documentation
-#   - make clean
-#   - make doc
-#   - bash scripts/check_doc.sh
-#   # Check coding style
-#   - make clean
-#   - make format
-#   - bash scripts/check_format.sh
-#   # Static analysis check
-#   - make clean
-#   - make tidy > tidy_log.txt
-#   - bash scripts/check_tidy.sh
-#   # Dynamic analysis check
-#   - make clean
-#   - make memcheck
-#   # Run Google's Address and Leak Sanitizer (ASAN and LSAN)
-#   - make clean
-#   - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=asan
-#   # Run Google's Memory Sanitizer (MSAN)
-#   - make clean
-#   - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=msan
-#   # Run Google's Undefined Behavior Sanitizer (UBSAN)
-#   - make clean
-#   - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=ubsan
-#   # Compute code coverage
-#   - make clean
-#   - make test DEBUG=on COVERAGE=on
-
-# after_success:
-#   - echo "Success! :)"
-#   - bash <(curl -s https://codecov.io/bash)
-
-# after_failure:
-#   - echo "Failure... :("
+    # Build and run unit tests
+    - name: "run-unit-tests"
+      stage: test
+      script:
+        - make test
+    # Coding style analysis
+    - name: "run-coding-style-analysis"
+      stage: test
+      script:
+        - make format
+        - bash scripts/check_format.sh
+    # Static analysis
+    - name: "run-static-analysis"
+      stage: test
+      script:
+        - make tidy > tidy_log.txt
+        - bash scripts/check_tidy.sh
+    # Dynamic analysis
+    - name: "run-dynamic-analysis"
+      stage: test
+      script:
+        - make memcheck
+    # Run Google's Address and Leak Sanitizer (ASAN and LSAN)
+    - name: "run-google-asan"
+      stage: test
+      script:
+        - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=asan
+    # Run Google's Memory Sanitizer (MSAN)
+    - name: "run-google-msan"
+      stage: test
+      script:
+        - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=msan
+    # Run Google's Undefined Behavior Sanitizer (UBSAN)
+    - name: "run-google-ubsan"
+      stage: test
+      script:
+        - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=ubsan
+    # Compute code coverage
+    - name: "compute-code-coverage"
+      stage: report
+      script:
+        - make test DEBUG=on COVERAGE=on
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
