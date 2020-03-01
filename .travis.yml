@@ -1,10 +1,15 @@
-# Travis configuration for C template project
+# Travis configuration for C Project Template
 # Author: Javier Balloffet <javier.balloffet@gmail.com>
 
 os: linux
 dist: bionic
 language: c
 compiler: gcc
+
+stages:
+  - build
+  - test
+  - report
 
 addons:
   apt:
@@ -13,44 +18,58 @@ addons:
       - graphviz
       - valgrind
 
-script:
-  # Build app
-  - make clean
-  - make
-  # Build and run unit tests
-  - make clean
-  - make test
-  # Build and check documentation
-  - make clean
-  - make doc
-  - bash scripts/check_doc.sh
-  # Check coding style
-  - make clean
-  - make format
-  - bash scripts/check_format.sh
-  # Static analysis check
-  - make clean
-  - make tidy > tidy_log.txt
-  - bash scripts/check_tidy.sh
-  # Dynamic analysis check
-  - make clean
-  - make memcheck
-  # Run Google's Address and Leak Sanitizer (ASAN and LSAN)
-  - make clean
-  - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=asan
-  # Run Google's Memory Sanitizer (MSAN)
-  - make clean
-  - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=msan
-  # Run Google's Undefined Behavior Sanitizer (UBSAN)
-  - make clean
-  - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=ubsan
-  # Compute code coverage
-  - make clean
-  - make test DEBUG=on COVERAGE=on
+jobs:
+  include:
+    # Build app
+    - name: "build-app"
+      stage: build
+      script:
+        - make
+    # Build and check documentation
+    - name: "build-doc"
+      stage: build
+      script:
+        - make doc
+        - bash scripts/check_doc.sh
 
-after_success:
-  - echo "Success! :)"
-  - bash <(curl -s https://codecov.io/bash)
+# script:
+#   # Build app
+#   - make clean
+#   - make
+#   # Build and run unit tests
+#   - make clean
+#   - make test
+#   # Build and check documentation
+#   - make clean
+#   - make doc
+#   - bash scripts/check_doc.sh
+#   # Check coding style
+#   - make clean
+#   - make format
+#   - bash scripts/check_format.sh
+#   # Static analysis check
+#   - make clean
+#   - make tidy > tidy_log.txt
+#   - bash scripts/check_tidy.sh
+#   # Dynamic analysis check
+#   - make clean
+#   - make memcheck
+#   # Run Google's Address and Leak Sanitizer (ASAN and LSAN)
+#   - make clean
+#   - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=asan
+#   # Run Google's Memory Sanitizer (MSAN)
+#   - make clean
+#   - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=msan
+#   # Run Google's Undefined Behavior Sanitizer (UBSAN)
+#   - make clean
+#   - make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=ubsan
+#   # Compute code coverage
+#   - make clean
+#   - make test DEBUG=on COVERAGE=on
 
-after_failure:
-  - echo "Failure... :("
+# after_success:
+#   - echo "Success! :)"
+#   - bash <(curl -s https://codecov.io/bash)
+
+# after_failure:
+#   - echo "Failure... :("
