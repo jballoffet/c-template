@@ -27,6 +27,7 @@ To build the sample project from source, the following tools are needed:
  * gcc
  * clang
  * clang-format
+ * clang-tidy
  * doxygen
  * graphviz
  * valgrind
@@ -34,7 +35,7 @@ To build the sample project from source, the following tools are needed:
 On Ubuntu/Debian, you can install them with:
 
 ```shell
-  sudo apt-get install git build-essential clang clang-format doxygen graphviz valgrind
+  sudo apt-get install git build-essential clang clang-format clang-tidy doxygen graphviz valgrind
 ```
 
 On other platforms, please use the corresponding package managing tool to
@@ -66,13 +67,15 @@ You should see something like this:
 
 ```
   Hello World!
-  foo.c -> bar(): 0
-  libbaz.a -> qux(): 1
+  foo.c -> foo_function(0): 0
+  bar.c -> bar_function_abs(-1): 1
+  bar.c -> bar_function_double(1): 2
+  libbaz.a -> baz_function(): 3
 ```
 
 ## Running the tests
 
-This template supports Unity framework for unit testing, and includes one test to show how to use it. To build and run the tests execute the following:
+This template supports Unity framework for unit testing, and includes a few tests to show how to use it. To build and run the tests execute the following:
 
 ```shell
   make test
@@ -82,10 +85,10 @@ After the building output, you should see something like this:
 
 ```
   Unity test run 1 of 1
-  .
+  ...
 
   -----------------------
-  1 Tests 0 Failures 0 Ignored 
+  3 Tests 0 Failures 0 Ignored
   OK
 ```
 
@@ -117,19 +120,23 @@ To run the tests again without rebuilding, execute:
 
 Please read [CONTRIBUTING.md](/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
+See also the list of [contributors](https://github.com/jballoffet/c-template/contributors) who participated in this project.
+
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/jballoffet/c-template/tags). 
 
 ## Authors
 
-* **Javier Balloffet** - *Initial work* - [jballoffet](https://github.com/jballoffet)
+ * [Javier Balloffet](https://github.com/jballoffet) ([National Technological University - Buenos Aires](https://www.frba.utn.edu.ar/en/))
 
-See also the list of [contributors](https://github.com/jballoffet/c-template/contributors) who participated in this project.
+## Maintainers
+
+ * [Javier Balloffet](https://github.com/jballoffet) ([National Technological University - Buenos Aires](https://www.frba.utn.edu.ar/en/))
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details
+This project is licensed under the MIT License. See the [LICENSE](/LICENSE) file for details.
 
 [Unity](http://www.throwtheswitch.org/unity/) is
 distributed under the MIT license. See [LICENSE.txt](/test/unity/LICENSE.txt) for details.
