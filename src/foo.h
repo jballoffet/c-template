@@ -15,6 +15,6 @@
  * @param[in] input Input value.
  * @return	  The function always returns the input value.
  */
-int bar(int input);
+int foo_function(int input);
 
 #endif /* FOO_H_ */

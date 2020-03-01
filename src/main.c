@@ -7,17 +7,20 @@
  * Example main file, part of the C Project Template. Use makefile to build.
  */
 #include <stdio.h>
+#include "bar.h"
 #include "baz.h"
 #include "foo.h"
 
 /*!
  * @brief Entry point function.
  *
- * @return The function returns 0 on success, and non-zero on failure.
+ * @return Zero on success, and non-zero on failure.
  */
 int main() {
   printf("Hello World!\n");
-  printf("foo.c -> bar(): %d\n", bar(0));
-  printf("libbaz.a -> qux(): %d\n", qux());
+  printf("foo.c -> foo_function(0): %d\n", foo_function(0));
+  printf("bar.c -> bar_function_abs(-1): %d\n", bar_function_abs(-1));
+  printf("bar.c -> bar_function_double(1): %d\n", bar_function_double(1));
+  printf("libbaz.a -> baz_function(): %d\n", baz_function());
   return 0;
 }

@@ -7,6 +7,5 @@
  * Example source file, part of the C Project Template. Use makefile to build.
  */
 #include "foo.h"
-#include <stdlib.h>
 
-int bar(int input) { return input; }
+int foo_function(int input) { return input; }

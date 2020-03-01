@@ -16,6 +16,10 @@ TEST_SETUP(foo) {}
 
 TEST_TEAR_DOWN(foo) {}
 
-TEST(foo, test_bar) { TEST_ASSERT_EQUAL_INT32(0, bar(0)); }
+TEST(foo, test_foo_function) {
+  TEST_ASSERT_EQUAL_INT32(0, foo_function(0));
+  TEST_ASSERT_EQUAL_INT32(1, foo_function(1));
+  TEST_ASSERT_EQUAL_INT32(-1, foo_function(-1));
+}
 
-TEST_GROUP_RUNNER(foo) { RUN_TEST_CASE(foo, test_bar); }
+TEST_GROUP_RUNNER(foo) { RUN_TEST_CASE(foo, test_foo_function); }

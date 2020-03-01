@@ -21,6 +21,7 @@ TEST_DIR           = test
 APP_SOURCES        = $(shell find $(SRC_DIR) -name '*.c')
 APP_HEADERS        = $(shell find $(SRC_DIR) -name '*.h')
 APP_OBJS           = $(patsubst %.c, $(BUILD_DIR)/%.o, $(APP_SOURCES))
+APP_LIBS           = baz
 APP_EXEC           = app.out
 
 TEST_SRC_DIR       = $(TEST_DIR)/src
@@ -31,7 +32,7 @@ TEST_UNITY_INC_DIR = $(TEST_DIR)/unity/include
 TEST_UNITY_SOURCES = $(shell find $(TEST_UNITY_SRC_DIR) -name '*.c')
 TEST_UNITY_OBJS    = $(patsubst %.c, $(BUILD_DIR)/%.o, $(TEST_UNITY_SOURCES))
 TEST_APP_SOURCES   = $(filter-out $(SRC_DIR)/main.c, $(APP_SOURCES))
-TEST_APP_OBJS      = $(patsubst %.c, $(BUILD_DIR)/%_cov.o, $(TEST_APP_SOURCES))
+TEST_APP_OBJS      = $(patsubst %.c, $(BUILD_DIR)/%.app.o, $(TEST_APP_SOURCES))
 TEST_EXEC          = test.out
 
 ################################################################
@@ -46,7 +47,7 @@ endif
 
 CFLAGS        = -c -Wall -I$(SRC_DIR) -I$(TEST_UNITY_INC_DIR) -I$(INC_DIR)
 EXTRA_CFLAGS  =
-LDFLAGS       = -L$(LIB_DIR) -lbaz
+LDFLAGS       = -L$(LIB_DIR) -l$(APP_LIBS)
 EXTRA_LDFLAGS =
 
 ifeq ($(DEBUG), on)
@@ -105,7 +106,7 @@ DYNAMIC_ANALYSIS_FLAGS = --tool=memcheck --leak-check=full --track-fds=yes --tra
 # MAKE TARGETS                                                 #
 ################################################################
 
-.PHONY: all test clean compress edit doc run format tidy memcheck help
+.PHONY: all test clean compress edit doc format tidy memcheck help
 
 all: $(APP_EXEC)
 
@@ -116,7 +117,7 @@ $(APP_EXEC): $(APP_OBJS)
 	@echo 'Built target $@'
 
 test: $(TEST_EXEC)
-	@echo '[RUN] Running unit tests'
+	@echo '[TEST] Running unit tests'
 	@./$(BIN_DIR)/$(TEST_EXEC)
 
 $(TEST_EXEC): $(TEST_APP_OBJS) $(TEST_OBJS) $(TEST_UNITY_OBJS)
@@ -130,17 +131,17 @@ $(BUILD_DIR)/%.o: %.c Makefile
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@
 
-$(BUILD_DIR)/%_cov.o: %.c Makefile
+$(BUILD_DIR)/%.app.o: %.c Makefile
 	@echo '[CC] Compiling C object $@'
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(COVERAGE_CFLAGS) $< -o $@
 
 clean:
-	@echo '[RM] Cleaning workspace'
+	@echo '[CLEAN] Cleaning workspace'
 	@rm -rf $(BUILD_DIR) $(BIN_DIR) $(DOC_DIR)
 
 compress:
-	@echo '[TAR] Packing workspace'
+	@echo '[COMPRESS] Packing workspace'
 	@tar -zcvf $(FILE_NAME) $(SRC_DIR) $(TEST_SRC_DIR) Makefile $(DOC_FILE)
 
 edit:
@@ -151,10 +152,6 @@ doc:
 	@echo '[DOC] Generating documentation'
 	@mkdir -p $(DOC_DIR)
 	@$(DOC_GEN) $(DOC_FILE)
-
-run:
-	@echo '[RUN] Running application'
-	@./$(BIN_DIR)/$(EXEC)
 
 format:
 	@echo '[FORMAT] Formatting source code'
@@ -178,7 +175,6 @@ help:
 	@echo '    make compress:  Generates .tar.gz file'
 	@echo '    make edit:      Opens code files with text editor'
 	@echo '    make doc:       Generates code documentation'
-	@echo '    make run:       Runs executable'
 	@echo '    make format:    Formats source code'
 	@echo '    make tidy:      Performs static analysis'
 	@echo '    make memcheck:  Performs dynamic analysis'
