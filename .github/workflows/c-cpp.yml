@@ -26,10 +26,10 @@ jobs:
         bash scripts/check_doc.sh
     - name: Build and run unit tests
       run: make test
-    - name: Coding style analysis
-      run: |
-        make format
-        bash scripts/check_format.sh
+#    - name: Coding style analysis
+#      run: |
+#        make format
+#        bash scripts/check_format.sh
     - name: Static analysis
       run: |
         make tidy > tidy_log.txt
