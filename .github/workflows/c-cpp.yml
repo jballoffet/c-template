@@ -12,6 +12,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: make
+    - name: Check out repository code
+      uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install doxygen graphviz valgrind
+    - name: Build application
       run: make
+    - name: Build and check documentation
+      run: |
+        make doc
+        bash scripts/check_doc.sh
+    - name: Build and run unit tests
+      run: make test
+    - name: Coding style analysis
+      run: |
+        make format
+        bash scripts/check_format.sh
+    - name: Static analysis
+      run: |
+        make tidy > tidy_log.txt
+        bash scripts/check_tidy.sh
+    - name: Dynamic analysis
+      run: make memcheck
+    - name: Run Google's Address and Leak Sanitizer (ASAN and LSAN)
+      run: make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=asan
+    - name: Run Google's Memory Sanitizer (MSAN)
+      run: make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=msan
+    - name: Run Google's Undefined Behavior Sanitizer (UBSAN)
+      run: make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=ubsan
