@@ -67,5 +67,5 @@ jobs:
         sudo apt-get install doxygen graphviz valgrind
     - name: Compute code coverage
       run: make test DEBUG=on COVERAGE=on
-      # after_success:
-        # - bash <(curl -s https://codecov.io/bash)
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
