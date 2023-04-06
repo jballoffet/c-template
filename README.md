@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.com/jballoffet/c-template.svg?branch=master)](https://travis-ci.com/jballoffet/c-template)
+[![Build Status](https://github.com/jballoffet/c-template/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/jballoffet/c-template/actions/workflows/c-cpp.yml)
 [![Coverage Status](https://codecov.io/gh/jballoffet/c-template/branch/master/graph/badge.svg)](https://codecov.io/gh/jballoffet/c-template)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # C Project Template
 
@@ -14,7 +14,7 @@ This template provides everything you need to start a new C project. It supports
  * [ClangTidy](https://clang.llvm.org/extra/clang-tidy/) support for static analysis
  * [Valgrind](https://valgrind.org/) support for dynamic analysis
  * [Google Sanitizers](https://github.com/google/sanitizers/) support for address, leak, memory and undefined behavior analysis
- * [Travis CI](https://travis-ci.com/) support for CI/CD
+ * [GitHub Actions](https://github.com/features/actions) support for CI/CD
 
 ## Getting Started
 

@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -24,6 +23,18 @@ jobs:
       run: |
         make doc
         bash scripts/check_doc.sh
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install doxygen graphviz valgrind
     - name: Build and run unit tests
       run: make test
 #    - name: Coding style analysis
@@ -42,3 +53,19 @@ jobs:
       run: make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=msan
     - name: Run Google's Undefined Behavior Sanitizer (UBSAN)
       run: make test COMPILER=clang DEBUG=on GOOGLE_SANITIZER=ubsan
+
+  report:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install doxygen graphviz valgrind
+    - name: Compute code coverage
+      run: make test DEBUG=on COVERAGE=on
+      # after_success:
+        # - bash <(curl -s https://codecov.io/bash)
