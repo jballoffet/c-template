@@ -40,7 +40,7 @@ jobs:
     - name: Coding style analysis
       run: |
         make format
-#        bash scripts/check_format.sh
+        bash scripts/check_format.sh
     - name: Static analysis
       run: |
         make tidy > tidy_log.txt
