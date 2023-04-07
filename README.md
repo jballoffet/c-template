@@ -1,5 +1,5 @@
 [![Build Status](https://github.com/jballoffet/c-template/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/jballoffet/c-template/actions/workflows/c-cpp.yml)
-[![Coverage Status](https://codecov.io/gh/jballoffet/c-template/branch/master/graph/badge.svg)](https://codecov.io/gh/jballoffet/c-template)
+[![Coverage Status](https://codecov.io/gh/jballoffet/c-template/branch/master/graph/badge.svg)](https://app.codecov.io/gh/jballoffet/c-template)
 [![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # C Project Template
@@ -136,7 +136,6 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](/LICENSE) file for details.
+This project is licensed under the GPLv3 License. See the [LICENSE](/LICENSE) file for details.
 
-[Unity](http://www.throwtheswitch.org/unity/) is
-distributed under the MIT license. See [LICENSE.txt](/test/unity/LICENSE.txt) for details.
+[Unity](http://www.throwtheswitch.org/unity/) is distributed under the MIT license. See [LICENSE.txt](/test/unity/LICENSE.txt) for details.

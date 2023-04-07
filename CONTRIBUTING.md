@@ -27,4 +27,4 @@ We use [GitHub issues](https://github.com/jballoffet/c-template/issues) to track
  * Run `make format` to conform to our lint rules
 
 ## License
-By contributing, you agree that your contributions will be licensed under its [MIT License](LICENSE).
+By contributing, you agree that your contributions will be licensed under its [GPLv3 License](/LICENSE).
