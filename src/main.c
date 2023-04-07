@@ -7,6 +7,7 @@
  * Example main file, part of the C Project Template. Use makefile to build.
  */
 #include <stdio.h>
+
 #include "bar.h"
 #include "baz.h"
 #include "foo.h"

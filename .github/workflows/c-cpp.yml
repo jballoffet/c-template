@@ -34,12 +34,12 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install doxygen graphviz valgrind
+        sudo apt-get install doxygen graphviz valgrind clang-format
     - name: Build and run unit tests
       run: make test
-#    - name: Coding style analysis
-#      run: |
-#        make format
+    - name: Coding style analysis
+      run: |
+        make format
 #        bash scripts/check_format.sh
     - name: Static analysis
       run: |
